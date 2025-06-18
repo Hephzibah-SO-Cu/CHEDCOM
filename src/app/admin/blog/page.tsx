@@ -22,6 +22,7 @@ export default function BlogAdminPage() {
         const res = await axios.get('/api/blog');
         setBlogs(res.data);
       } catch (err) {
+        console.error(err);
         setError('Failed to fetch blog posts.');
       } finally {
         setLoading(false);
@@ -39,6 +40,7 @@ export default function BlogAdminPage() {
       await axios.delete(`/api/blog/${id}`);
       setBlogs(blogs.filter((blog) => blog._id !== id));
     } catch (err) {
+      console.error(err);
       alert('Error deleting blog post');
     }
   };
