@@ -9,6 +9,7 @@ type BlogPost = {
   title: string;
   content: string;
   createdAt: string;
+  updatedAt: string;
 };
 
 export default function BlogAdminPage() {
@@ -66,7 +67,8 @@ export default function BlogAdminPage() {
             <div key={post._id} className="p-4 border rounded flex justify-between items-center">
               <div>
                 <h2 className="text-lg font-semibold">{post.title}</h2>
-                <p className="text-sm text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
+                <p className="text-sm text-gray-500">Created: {new Date(post.createdAt).toLocaleString()}</p>
+                <p className="text-sm text-gray-400">Updated: {new Date(post.updatedAt).toLocaleString()}</p>
               </div>
               <div className="space-x-2">
                 <Link
