@@ -15,7 +15,7 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
     }
 
     return NextResponse.json(blog);
-  } catch {
+  } catch (error) {
     return NextResponse.json({ message: 'Error fetching blog post' }, { status: 500 });
   }
 }
@@ -25,7 +25,7 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
 
   const { title, content } = await req.json();
   const params = await context.params;
-  const { id } = params;
+  const { id } = context.params;
 
   try {
     const updated = await Blog.findByIdAndUpdate(
@@ -39,7 +39,7 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
     }
 
     return NextResponse.json(updated);
-  } catch {
+  } catch (error) {
     return NextResponse.json({ message: 'Failed to update post' }, { status: 500 });
   }
 }
