@@ -5,8 +5,7 @@ import connectMongo from '@/lib/mongoose';
 export async function GET(req: NextRequest, context: { params: { id: string } }) {
   await connectMongo();
 
-  const params = await context.params;
-  const { id } = params;
+  const { id } = context.params;
 
   try {
     const blog = await Blog.findById(id);
@@ -15,7 +14,7 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
     }
 
     return NextResponse.json(blog);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Error fetching blog post' }, { status: 500 });
   }
 }
@@ -24,8 +23,7 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
   await connectMongo();
 
   const { title, content } = await req.json();
-  const params = await context.params;
-  const { id } = params;
+  const { id } = context.params;
 
   try {
     const updated = await Blog.findByIdAndUpdate(
@@ -39,7 +37,7 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
     }
 
     return NextResponse.json(updated);
-  } catch (error) {
+  } catch {
     return NextResponse.json({ message: 'Failed to update post' }, { status: 500 });
   }
 }
