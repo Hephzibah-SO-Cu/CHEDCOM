@@ -5,7 +5,8 @@ import connectMongo from '@/lib/mongoose';
 export async function GET(req: NextRequest, context: { params: { id: string } }) {
   await connectMongo();
 
-  const { id } = context.params;
+  const params = await context.params;
+  const { id } = params;
 
   try {
     const blog = await Blog.findById(id);
@@ -23,7 +24,8 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
   await connectMongo();
 
   const { title, content } = await req.json();
-  const { id } = context.params;
+  const params = await context.params;
+  const { id } = params;
 
   try {
     const updated = await Blog.findByIdAndUpdate(
