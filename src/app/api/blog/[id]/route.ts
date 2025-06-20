@@ -2,10 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import Blog from '@/models/Blog';
 import connectMongo from '@/lib/mongoose';
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
+// GET a specific blog post by ID
+export async function GET(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   await connectMongo();
 
-  const params = await context.params;
   const { id } = params;
 
   try {
@@ -20,12 +23,15 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
   }
 }
 
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+// UPDATE a specific blog post
+export async function PUT(
+  req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   await connectMongo();
 
+  const { id } = params;
   const { title, content } = await req.json();
-  // const params = await context.params;
-  const { id } = context.params;
 
   try {
     const updated = await Blog.findByIdAndUpdate(
