@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import Blog from '@/models/Blog';
 import connectMongo from '@/lib/mongoose';
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: Record<string, string> }
-) {
+type Params = { params: { id: string } };
+
+export async function GET(req: NextRequest, context: Params) {
   await connectMongo();
-  const { id } = params;
+
+  const { id } = context.params;
 
   try {
     const blog = await Blog.findById(id);
@@ -21,17 +21,18 @@ export async function GET(
   }
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: Record<string, string> }
-) {
+export async function PUT(req: NextRequest, context: Params) {
   await connectMongo();
 
-  const { id } = params;
   const { title, content } = await req.json();
+  const { id } = context.params;
 
   try {
-    const updated = await Blog.findByIdAndUpdate(id, { title, content }, { new: true });
+    const updated = await Blog.findByIdAndUpdate(
+      id,
+      { title, content },
+      { new: true }
+    );
 
     if (!updated) {
       return NextResponse.json({ message: 'Post not found' }, { status: 404 });
