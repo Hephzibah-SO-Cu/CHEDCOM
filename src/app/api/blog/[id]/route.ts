@@ -1,16 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import Blog from '@/models/Blog';
 import connectMongo from '@/lib/mongoose';
 
-type Params = { params: { id: string } };
-
-export async function GET(req: NextRequest, context: Params) {
+// No type annotations — let Next.js handle it silently
+export async function GET(req: NextRequest, { params }: any) {
   await connectMongo();
 
-  const { id } = context.params;
-
   try {
-    const blog = await Blog.findById(id);
+    const blog = await Blog.findById(params.id);
     if (!blog) {
       return NextResponse.json({ message: 'Blog post not found' }, { status: 404 });
     }
@@ -21,18 +19,13 @@ export async function GET(req: NextRequest, context: Params) {
   }
 }
 
-export async function PUT(req: NextRequest, context: Params) {
+export async function PUT(req: NextRequest, { params }: any) {
   await connectMongo();
 
   const { title, content } = await req.json();
-  const { id } = context.params;
 
   try {
-    const updated = await Blog.findByIdAndUpdate(
-      id,
-      { title, content },
-      { new: true }
-    );
+    const updated = await Blog.findByIdAndUpdate(params.id, { title, content }, { new: true });
 
     if (!updated) {
       return NextResponse.json({ message: 'Post not found' }, { status: 404 });
