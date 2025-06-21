@@ -34,7 +34,9 @@ export default function BlogAdminPage() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    const confirmDelete = confirm('Are you sure you want to delete this blog post?');
+    const confirmDelete = window.confirm(
+      'Are you absolutely sure you want to delete this blog post?\n\nThis action is permanent and cannot be undone.'
+    );
     if (!confirmDelete) return;
 
     try {
