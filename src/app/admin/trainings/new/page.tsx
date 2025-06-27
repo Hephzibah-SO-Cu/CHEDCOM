@@ -51,8 +51,12 @@ export default function CreateTrainingPage() {
 
       if (!res.ok) throw new Error('Failed to create training');
       router.push('/admin/trainings');
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Something went wrong');
+      }
     } finally {
       setIsSubmitting(false);
     }

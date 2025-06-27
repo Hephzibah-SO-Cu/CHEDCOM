@@ -1,17 +1,14 @@
-// src/app/api/trainings/[id]/route.ts
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '@/lib/mongoose';
 import Training from '@/models/Training';
 
-// GET a single training by ID
-export async function GET(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function GET(req: NextRequest, context: any) {
   await connectMongo();
+  const id = (await context)?.params?.id;
 
   try {
-    const training = await Training.findById(context.params.id);
+    const training = await Training.findById(id);
     if (!training) {
       return NextResponse.json({ message: 'Training not found' }, { status: 404 });
     }
@@ -21,16 +18,13 @@ export async function GET(
   }
 }
 
-// PUT to update an existing training
-export async function PUT(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest, context: any) {
   await connectMongo();
+  const id = (await context)?.params?.id;
 
   try {
     const data = await req.json();
-    const updated = await Training.findByIdAndUpdate(context.params.id, data, { new: true });
+    const updated = await Training.findByIdAndUpdate(id, data, { new: true });
 
     if (!updated) {
       return NextResponse.json({ message: 'Training not found' }, { status: 404 });
@@ -41,15 +35,12 @@ export async function PUT(
   }
 }
 
-// DELETE a training
-export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest, context: any) {
   await connectMongo();
+  const id = (await context)?.params?.id;
 
   try {
-    const deleted = await Training.findByIdAndDelete(context.params.id);
+    const deleted = await Training.findByIdAndDelete(id);
     if (!deleted) {
       return NextResponse.json({ message: 'Training not found' }, { status: 404 });
     }

@@ -30,8 +30,12 @@ export default function TrainingsAdminPage() {
         if (!res.ok) throw new Error('Failed to fetch trainings');
         const data = await res.json();
         setTrainings(data);
-      } catch (err: any) {
-        setError(err.message || 'Error loading trainings');
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('Error loading trainings');
+        }
       } finally {
         setLoading(false);
       }

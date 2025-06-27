@@ -9,7 +9,8 @@ export async function GET() {
   try {
     const trainings = await Training.find().sort({ createdAt: -1 });
     return NextResponse.json(trainings);
-  } catch (error) {
+  } catch (error: unknown) {
+    console.error('Error fetching trainings:', error);
     return NextResponse.json({ message: 'Error fetching trainings' }, { status: 500 });
   }
 }
@@ -52,7 +53,8 @@ export async function POST(req: NextRequest) {
 
     const saved = await newTraining.save();
     return NextResponse.json(saved, { status: 201 });
-  } catch (error) {
-    return NextResponse.json({ message: 'Failed to create training' }, { status: 500 });
+  } catch (error: unknown) {
+    console.error('Error fetching trainings:', error);
+    return NextResponse.json({ message: 'Error fetching trainings' }, { status: 500 });
   }
 }

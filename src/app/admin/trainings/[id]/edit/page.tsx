@@ -5,7 +5,9 @@ import { useParams, useRouter } from 'next/navigation';
 
 export default function EditTrainingPage() {
   const router = useRouter();
-  const { id } = useParams();
+  const params = useParams();
+  const id = typeof params.id === 'string' ? params.id : '';
+
 
   const [title, setTitle] = useState('');
   const [shortDescription, setShortDescription] = useState('');
@@ -41,8 +43,12 @@ export default function EditTrainingPage() {
         setStartDate(data.startDate?.slice(0, 10) || '');
         setEndDate(data.endDate?.slice(0, 10) || '');
         setIsOngoing(data.isOngoing);
-      } catch (err: any) {
-        setError(err.message || 'Something went wrong');
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('Something went wrong');
+        }
       }
     };
 
@@ -78,8 +84,12 @@ export default function EditTrainingPage() {
 
       if (!res.ok) throw new Error('Failed to update training');
       router.push('/admin/trainings');
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Something went wrong');
+      }
     } finally {
       setIsSubmitting(false);
     }
