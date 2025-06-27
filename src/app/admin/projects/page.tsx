@@ -26,8 +26,12 @@ export default function ProjectsAdminPage() {
         if (!res.ok) throw new Error('Failed to fetch projects');
         const data = await res.json();
         setProjects(data);
-      } catch (err: any) {
-        setError(err.message || 'An error occurred.');
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('An error occurred.');
+        }
       } finally {
         setLoading(false);
       }

@@ -34,8 +34,12 @@ export default function EditProjectPage() {
         setStartDate(data.startDate?.slice(0, 10) || '');
         setEndDate(data.endDate?.slice(0, 10) || '');
         setIsOngoing(data.isOngoing);
-      } catch (err: any) {
-        setError(err.message || 'Something went wrong');
+      } catch (err) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('Something went wrong');
+        }
       }
     };
 
@@ -70,9 +74,14 @@ export default function EditProjectPage() {
       if (!res.ok) throw new Error('Failed to update project');
 
       router.push('/admin/projects');
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
-    } finally {
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Something went wrong');
+      }
+    }
+ finally {
       setIsSubmitting(false);
     }
   };

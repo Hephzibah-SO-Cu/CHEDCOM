@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextRequest, NextResponse } from 'next/server';
 import connectMongo from '@/lib/mongoose';
 import Project from '@/models/Project';
 
 // GET all projects
-export async function GET(req: NextRequest, context: any) {
+export async function GET() {
   await connectMongo();
 
   try {
@@ -16,7 +15,7 @@ export async function GET(req: NextRequest, context: any) {
 }
 
 // POST a new project
-export async function POST(req: NextRequest, context: any) {
+export async function POST(req: NextRequest) {
   await connectMongo();
 
   try {

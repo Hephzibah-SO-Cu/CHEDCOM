@@ -45,9 +45,14 @@ export default function CreateProjectPage() {
       if (!res.ok) throw new Error('Failed to create project');
 
       router.push('/admin/projects');
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
-    } finally {
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Something went wrong');
+      }
+    }
+ finally {
       setIsSubmitting(false);
     }
   };
