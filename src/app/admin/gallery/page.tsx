@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
+
 
 type GalleryItem = {
   _id: string;
@@ -24,8 +26,12 @@ export default function GalleryAdminPage() {
         if (!res.ok) throw new Error('Failed to load gallery');
         const data = await res.json();
         setItems(data);
-      } catch (err: any) {
-        setError(err.message || 'An error occurred');
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('Error loading item');
+        }
       } finally {
         setLoading(false);
       }
@@ -71,10 +77,13 @@ export default function GalleryAdminPage() {
           {items.map((item) => (
             <div key={item._id} className="border rounded shadow p-3 bg-white flex flex-col">
               {item.mediaType === 'image' ? (
-                <img
-                  src={item.mediaUrl}
+                <Image
+                  src={item.mediaUrl.replace(/\.(jpg|jpeg|png)$/, '.webp')}
                   alt={item.title}
+                  width={800}
+                  height={600}
                   className="w-full h-48 object-cover rounded"
+                  unoptimized
                 />
               ) : (
                 <video

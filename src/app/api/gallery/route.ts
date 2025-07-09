@@ -8,9 +8,9 @@ export async function GET() {
   try {
     const entries = await Gallery.find().sort({ createdAt: -1 });
     return NextResponse.json(entries);
-  } catch (err) {
-    return NextResponse.json({ message: 'Failed to fetch gallery entries' }, { status: 500 });
-  }
+  } catch {
+  return NextResponse.json({ message: 'Failed to fetch gallery entries' }, { status: 500 });
+}
 }
 
 export async function POST(req: NextRequest) {

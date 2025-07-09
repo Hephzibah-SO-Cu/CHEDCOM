@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
+import Image from 'next/image';
 
 export default function EditGalleryItemPage() {
   const router = useRouter();
@@ -28,8 +29,12 @@ export default function EditGalleryItemPage() {
         setTags(data.tags.join(', '));
         setMediaUrl(data.mediaUrl);
         setMediaType(data.mediaType);
-      } catch (err: any) {
-        setError(err.message || 'Error loading item');
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError('Error loading item');
+        }
       } finally {
         setIsLoading(false);
       }
@@ -56,8 +61,12 @@ export default function EditGalleryItemPage() {
 
       if (!res.ok) throw new Error('Failed to update gallery item');
       router.push('/admin/gallery');
-    } catch (err: any) {
-      setError(err.message || 'Something went wrong');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError('Error loading item');
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -113,7 +122,14 @@ export default function EditGalleryItemPage() {
           <div>
             <label className="block font-medium text-black mb-1">Media Preview</label>
             {mediaType === 'image' ? (
-              <img src={mediaUrl} alt="preview" className="w-full rounded max-h-96 object-contain" />
+              <Image
+                src={mediaUrl.replace(/\.(jpg|jpeg|png)$/, '.webp')} // optional: switch to next-gen
+                alt="preview"
+                width={800}
+                height={600}
+                className="w-full rounded max-h-96 object-contain"
+                unoptimized
+              />
             ) : mediaType === 'video' ? (
               <video src={mediaUrl} controls className="w-full rounded max-h-96" />
             ) : (
