@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Image from 'next/image';
+import { toNextGenUrl } from '@/utils/imageFormat';
+
 
 export default function EditGalleryItemPage() {
   const router = useRouter();
@@ -123,7 +125,7 @@ export default function EditGalleryItemPage() {
             <label className="block font-medium text-black mb-1">Media Preview</label>
             {mediaType === 'image' ? (
               <Image
-                src={mediaUrl.replace(/\.(jpg|jpeg|png)$/, '.webp')} // optional: switch to next-gen
+                src={toNextGenUrl(mediaUrl)}
                 alt="preview"
                 width={800}
                 height={600}
