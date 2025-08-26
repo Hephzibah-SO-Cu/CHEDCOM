@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { ClientProviders } from "@/components/ClientProviders";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SessionProvider } from "next-auth/react";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,20 +17,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "CHEDCOM",
-  description: "The official website of The Centre for Health, Education and Development Communication (CHEDCOM)",
+  description:
+    "The official website of The Centre for Health, Education and Development Communication (CHEDCOM)",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ClientProviders>{children}</ClientProviders>
       </body>
     </html>
   );
