@@ -1,13 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import bcrypt from 'bcryptjs';
-import type { AuthOptions, User } from 'next-auth';
-import type { SessionStrategy } from 'next-auth';
+import type { AuthOptions, User as NextAuthUser } from 'next-auth';
 import type { JWT } from 'next-auth/jwt';
 import type { Session } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import connectToDatabase from './mongoose';
 import UserModel from '@/models/User';
-import { comparePassword as comparePasswordUtil } from './auth-utils'; // <- singular
+import { comparePassword as comparePasswordUtil } from './auth-utils';
 
 export async function hashPassword(password: string): Promise<string> {
   const salt = await bcrypt.genSalt(10);
@@ -45,7 +43,7 @@ export const authOptions: AuthOptions = {
           email: user.email,
           role: user.role,
           canManageAdmins: user.canManageAdmins,
-        };
+        } as NextAuthUser & { role: 'admin' | 'superadmin'; canManageAdmins: boolean };
       },
     }),
   ],
@@ -53,24 +51,26 @@ export const authOptions: AuthOptions = {
     signIn: '/admin/login',
   },
   session: {
-    strategy: 'jwt' as SessionStrategy,
+    strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: User }) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    async jwt({ token, user }: { token: JWT; user?: any }) {
       if (user) {
         token.id = user.id;
-        token.role = (user as any).role;
-        token.canManageAdmins = (user as any).canManageAdmins || false;
+        token.role = user.role;
+        token.canManageAdmins = user.canManageAdmins ?? false;
       }
       return token;
     },
     async session({ session, token }: { session: Session; token: JWT }) {
-      session.user.id = token.id;
-      session.user.role = token.role;
-      session.user.canManageAdmins = token.canManageAdmins as boolean;
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as 'admin' | 'superadmin';
+        session.user.canManageAdmins = token.canManageAdmins as boolean;
+      }
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
 };
-

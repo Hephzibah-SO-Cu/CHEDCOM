@@ -1,4 +1,3 @@
-// src/app/admin/layout.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -23,12 +22,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     { href: '/admin/admins', label: 'Manage Admins' },
   ];
 
-  // ✅ Always run this hook, but only close sidebar if not login page
   useEffect(() => {
     if (!isLoginPage) setSidebarOpen(false);
   }, [pathname, isLoginPage]);
 
-  // Close on Escape & lock scroll when open (mobile)
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') setSidebarOpen(false);
@@ -50,11 +47,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900">
       {isLoginPage ? (
-        // ✅ Login page only → no sidebar/topbar
         <main className="flex-1">{children}</main>
       ) : (
         <>
-          {/* Overlay (mobile) */}
           {sidebarOpen && (
             <div
               className="fixed inset-0 bg-black/40 backdrop-blur-[1px] z-30 lg:hidden"
@@ -63,7 +58,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             />
           )}
 
-          {/* Sidebar */}
           <aside
             id="admin-sidebar"
             aria-label="Admin navigation"
@@ -73,7 +67,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           >
             <div className="p-4 border-b dark:border-gray-700 flex items-center justify-between">
               <h2 className="text-lg font-bold text-gray-800 dark:text-gray-200">Panel</h2>
-              {/* Close button (mobile) */}
               <button
                 type="button"
                 aria-label="Close sidebar"
@@ -109,9 +102,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             </nav>
           </aside>
 
-          {/* Main content */}
           <div className="flex-1 flex flex-col lg:ml-64">
-            {/* Topbar */}
             <header className="flex items-center justify-between bg-white dark:bg-gray-800 border-b dark:border-gray-700 px-4 py-3 shadow-sm">
               <div className="flex items-center gap-2">
                 <button
@@ -147,7 +138,6 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </div>
             </header>
 
-            {/* Page content */}
             <main className="flex-1 p-6">{children}</main>
           </div>
         </>
