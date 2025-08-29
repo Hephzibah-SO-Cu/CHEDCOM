@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌍 CHEDCOM NGO Website  
 
-## Getting Started
+The official website and admin dashboard for **CHEDCOM**, a non-governmental organization focused on community development, training, and social impact.  
 
-First, run the development server:
+This project includes:  
+- A **public-facing website** (Landing, About, Team, Projects, Trainings, Blog, Gallery, Contact).  
+- A secure **admin dashboard** with role-based access for managing site content.  
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Tech Stack  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** [Next.js 13+ (App Router)](https://nextjs.org/)  
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)  
+- **Database:** [MongoDB Atlas](https://www.mongodb.com/atlas) + [Mongoose](https://mongoosejs.com/)  
+- **Authentication:** [NextAuth.js](https://next-auth.js.org/) (with JWT strategy + bcrypt)  
+- **Media Uploads:** [ReImage](https://reimage.io/) for image hosting  
+- **Deployment:** [Vercel](https://vercel.com/)  
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## ✅ Features (MVP)  
 
-To learn more about Next.js, take a look at the following resources:
+### Admin Dashboard  
+- Secure login with **NextAuth.js**.  
+- Role-based access: **Superadmins** vs **Admins**.  
+- Middleware protection for `/admin/*` routes.  
+- **CRUD Modules Completed**:  
+  - **Blog** → Create and manage posts.  
+  - **Projects** → Manage project details (title, desc, collaborators, dates, ongoing flag, image).  
+  - **Trainings** → Full schema (facilitators, target audience, resources, cert flag, mode, dates).  
+  - **Gallery** → Uploads via ReImage, media stored in MongoDB, pagination included.  
+- **Manage Admins** → Superadmins can create, edit, and delete other admin accounts.  
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Public Website (In Progress)  
+- Landing page (replace boilerplate).  
+- About page.  
+- Team page.  
+- Projects page (pulls from DB).  
+- Trainings page (pulls from DB).  
+- Blog (list + single post).  
+- Gallery (paginated, optimized images).  
+- Contact page.  
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## 🔐 Admin Roles  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Superadmin**  
+  - Can manage other admins.  
+  - Full CRUD on all modules.  
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Admin**  
+  - Can manage Blog, Projects, Trainings, Gallery.  
+  - Cannot manage other admins.  
+
+---
+
+## 📜 License  
+
+This project is built for CHEDCOM NGO. All rights reserved.  
